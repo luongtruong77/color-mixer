@@ -11,10 +11,7 @@
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
 
-    :root {
-      --bg: #fff9f0;
-      --shadow: rgba(0,0,0,0.12);
-    }
+    :root { --bg: #fff9f0; --shadow: rgba(0,0,0,0.12); }
 
     body {
       background: var(--bg);
@@ -23,13 +20,12 @@
       flex-direction: column;
       align-items: center;
       justify-content: space-between;
-      padding: 16px 12px 24px;
+      padding: 12px 10px 20px;
       font-family: 'Comic Sans MS', 'Chalkboard SE', 'Marker Felt', cursive;
       overflow: hidden;
       position: relative;
     }
 
-    /* Floating background dots */
     body::before {
       content: '';
       position: fixed;
@@ -38,14 +34,13 @@
         radial-gradient(circle at 15% 20%, rgba(255,80,80,0.07) 60px, transparent 60px),
         radial-gradient(circle at 80% 15%, rgba(255,220,0,0.09) 80px, transparent 80px),
         radial-gradient(circle at 10% 75%, rgba(60,120,255,0.07) 70px, transparent 70px),
-        radial-gradient(circle at 85% 80%, rgba(180,80,220,0.06) 90px, transparent 90px),
-        radial-gradient(circle at 50% 50%, rgba(255,150,0,0.05) 120px, transparent 120px);
+        radial-gradient(circle at 85% 80%, rgba(180,80,220,0.06) 90px, transparent 90px);
       pointer-events: none;
       z-index: 0;
     }
 
     h1 {
-      font-size: clamp(1.4rem, 5vw, 2rem);
+      font-size: clamp(1.2rem, 4.5vw, 1.7rem);
       color: #444;
       text-align: center;
       letter-spacing: 1px;
@@ -53,42 +48,76 @@
       z-index: 1;
       flex-shrink: 0;
     }
-
     h1 span { display: inline-block; animation: titleBounce 2s ease-in-out infinite; }
-    h1 span:nth-child(2) { animation-delay: 0.15s; }
-    h1 span:nth-child(3) { animation-delay: 0.3s; }
-    h1 span:nth-child(4) { animation-delay: 0.45s; }
-    h1 span:nth-child(5) { animation-delay: 0.6s; }
-    h1 span:nth-child(6) { animation-delay: 0.75s; }
-    h1 span:nth-child(7) { animation-delay: 0.9s; }
-    h1 span:nth-child(8) { animation-delay: 1.05s; }
-    h1 span:nth-child(9) { animation-delay: 1.2s; }
-    h1 span:nth-child(10) { animation-delay: 1.35s; }
-    h1 span:nth-child(11) { animation-delay: 1.5s; }
-    h1 span:nth-child(12) { animation-delay: 1.65s; }
-
+    h1 span:nth-child(2)  { animation-delay: 0.1s; }
+    h1 span:nth-child(3)  { animation-delay: 0.2s; }
+    h1 span:nth-child(4)  { animation-delay: 0.3s; }
+    h1 span:nth-child(5)  { animation-delay: 0.4s; }
+    h1 span:nth-child(6)  { animation-delay: 0.5s; }
+    h1 span:nth-child(8)  { animation-delay: 0.6s; }
+    h1 span:nth-child(9)  { animation-delay: 0.7s; }
+    h1 span:nth-child(10) { animation-delay: 0.8s; }
+    h1 span:nth-child(11) { animation-delay: 0.9s; }
+    h1 span:nth-child(12) { animation-delay: 1.0s; }
     @keyframes titleBounce {
       0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-6px); }
+      50% { transform: translateY(-5px); }
+    }
+
+    /* ── SELECTED PIPS ROW ── */
+    .selected-row {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      justify-content: center;
+      z-index: 1;
+      min-height: 44px;
+      flex-shrink: 0;
+      flex-wrap: wrap;
+      max-width: 90vw;
+    }
+    .sel-pip {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      border: 3px dashed #ccc;
+      transition: background 0.25s, border-color 0.25s, transform 0.2s;
+      box-shadow: 0 2px 6px var(--shadow);
+      position: relative;
+      flex-shrink: 0;
+    }
+    .sel-pip.filled {
+      border: 3px solid rgba(0,0,0,0.12);
+      transform: scale(1.15);
+      animation: pipPop 0.2s ease-out both;
+    }
+    @keyframes pipPop {
+      0% { transform: scale(0.5); }
+      70% { transform: scale(1.25); }
+      100% { transform: scale(1.15); }
+    }
+    .sel-pip-hint {
+      font-size: 1.3rem;
+      color: #ccc;
+      line-height: 1;
     }
 
     /* ── MIX ZONE ── */
     .mix-zone {
       position: relative;
-      width: min(320px, 80vw);
-      height: min(320px, 80vw);
+      width: min(260px, 70vw);
+      height: min(260px, 70vw);
       display: flex;
       align-items: center;
       justify-content: center;
       z-index: 1;
       flex-shrink: 0;
     }
-
     .mix-ring {
       position: absolute;
       inset: 0;
       border-radius: 50%;
-      border: 5px dashed #ddd;
+      border: 4px dashed #ddd;
       animation: spinRing 12s linear infinite;
     }
     @keyframes spinRing { to { transform: rotate(360deg); } }
@@ -113,49 +142,38 @@
       33%      { border-radius: 45% 55% 40% 60% / 60% 45% 55% 40%; }
       66%      { border-radius: 55% 45% 60% 40% / 40% 55% 45% 60%; }
     }
-
     .mix-blob.splat {
       animation: splat 0.5s cubic-bezier(.36,.07,.19,.97) both, blobMorph 6s ease-in-out infinite 0.5s;
     }
     @keyframes splat {
       0%   { transform: scale(1); }
-      20%  { transform: scale(1.4, 0.7); }
-      50%  { transform: scale(0.85, 1.2); }
+      20%  { transform: scale(1.45, 0.65); }
+      50%  { transform: scale(0.8, 1.25); }
       70%  { transform: scale(1.1, 0.95); }
       100% { transform: scale(1); }
     }
-
     .mix-blob .color-name {
-      font-size: clamp(1rem, 4vw, 1.4rem);
+      font-size: clamp(0.85rem, 3.5vw, 1.2rem);
       font-weight: bold;
       color: rgba(255,255,255,0.95);
-      text-shadow: 0 2px 8px rgba(0,0,0,0.3);
+      text-shadow: 0 2px 8px rgba(0,0,0,0.35);
       text-align: center;
       padding: 0 8px;
       transition: opacity 0.3s;
       letter-spacing: 1px;
     }
-    .mix-blob .color-name.dark {
-      color: rgba(0,0,0,0.6);
-      text-shadow: none;
-    }
+    .mix-blob .color-name.dark { color: rgba(0,0,0,0.6); text-shadow: none; }
     .mix-blob .color-name.hidden { opacity: 0; }
-
-    /* Shine overlay */
     .mix-blob::after {
       content: '';
       position: absolute;
-      top: 10%;
-      left: 15%;
-      width: 35%;
-      height: 25%;
+      top: 10%; left: 15%;
+      width: 35%; height: 25%;
       background: rgba(255,255,255,0.25);
       border-radius: 50%;
       filter: blur(6px);
       pointer-events: none;
     }
-
-    /* Sparkles */
     .sparkle {
       position: absolute;
       font-size: 1.5rem;
@@ -167,40 +185,19 @@
       100% { transform: translate(var(--dx), var(--dy)) scale(1.5) rotate(180deg); opacity: 0; }
     }
 
-    /* Selected indicators */
-    .selected-row {
-      display: flex;
-      gap: 12px;
-      align-items: center;
-      justify-content: center;
-      z-index: 1;
-      min-height: 48px;
-      flex-shrink: 0;
-    }
-    .sel-pip {
-      width: 36px;
-      height: 36px;
-      border-radius: 50%;
-      border: 3px solid #ccc;
-      transition: background 0.3s, border-color 0.3s, transform 0.2s;
-      box-shadow: 0 3px 8px var(--shadow);
-    }
-    .sel-pip.filled { border-color: transparent; transform: scale(1.15); }
-    .plus-icon { font-size: 1.5rem; color: #bbb; }
-
-    /* ── COLOR BLOBS ── */
+    /* ── COLOR GRID ── */
     .color-grid {
       display: flex;
       flex-wrap: wrap;
-      gap: 14px;
+      gap: 10px;
       justify-content: center;
       z-index: 1;
       flex-shrink: 0;
+      max-width: 95vw;
     }
-
     .color-btn {
-      width: clamp(72px, 18vw, 96px);
-      height: clamp(72px, 18vw, 96px);
+      width: clamp(60px, 15vw, 80px);
+      height: clamp(60px, 15vw, 80px);
       border: none;
       cursor: pointer;
       position: relative;
@@ -213,42 +210,35 @@
       -webkit-user-select: none;
       user-select: none;
     }
-
     .color-btn svg { position: absolute; inset: 0; width: 100%; height: 100%; }
-
     .color-btn .label {
       position: relative;
       z-index: 2;
-      font-size: clamp(0.6rem, 2vw, 0.8rem);
+      font-size: clamp(0.55rem, 1.8vw, 0.72rem);
       font-weight: bold;
       pointer-events: none;
-      letter-spacing: 0.5px;
+      letter-spacing: 0.4px;
     }
-
-    .color-btn:active { transform: scale(0.92); }
-
+    .color-btn:active { transform: scale(0.9); }
     .color-btn.selected .blob-shape {
       animation: wiggle 0.4s ease-in-out;
-      filter: drop-shadow(0 0 10px currentColor);
+      filter: drop-shadow(0 0 8px currentColor);
     }
     @keyframes wiggle {
       0%,100% { transform: rotate(0deg) scale(1); }
-      20%  { transform: rotate(-8deg) scale(1.1); }
-      40%  { transform: rotate(8deg) scale(1.1); }
-      60%  { transform: rotate(-5deg) scale(1.05); }
-      80%  { transform: rotate(5deg) scale(1.05); }
+      20%  { transform: rotate(-8deg) scale(1.12); }
+      40%  { transform: rotate(8deg) scale(1.12); }
+      60%  { transform: rotate(-4deg) scale(1.06); }
+      80%  { transform: rotate(4deg) scale(1.06); }
     }
-
     .color-btn.selected::after {
       content: '✓';
       position: absolute;
-      top: -6px;
-      right: -6px;
-      width: 22px;
-      height: 22px;
+      top: -5px; right: -5px;
+      width: 20px; height: 20px;
       background: #fff;
       border-radius: 50%;
-      font-size: 13px;
+      font-size: 12px;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -262,25 +252,61 @@
       100% { transform: scale(1); }
     }
 
-    /* ── CLEAR BUTTON ── */
-    .clear-btn {
-      padding: 14px 36px;
-      border: none;
-      border-radius: 50px;
-      background: #fff;
-      color: #888;
-      font-family: inherit;
-      font-size: 1rem;
-      font-weight: bold;
-      letter-spacing: 1px;
-      cursor: pointer;
-      box-shadow: 0 4px 16px rgba(0,0,0,0.1), 0 1px 3px rgba(0,0,0,0.08);
-      transition: transform 0.15s, box-shadow 0.15s, color 0.2s;
+    /* ── BUTTONS ROW ── */
+    .btn-row {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      justify-content: center;
       z-index: 1;
       flex-shrink: 0;
     }
-    .clear-btn:active { transform: scale(0.95); box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
-    .clear-btn:hover { color: #555; box-shadow: 0 6px 20px rgba(0,0,0,0.13); }
+    .mix-btn {
+      padding: 14px 32px;
+      border: none;
+      border-radius: 50px;
+      background: linear-gradient(135deg, #ff6b6b, #ffd93d, #6bcb77, #4d96ff);
+      background-size: 300% 300%;
+      animation: gradientShift 3s ease infinite;
+      color: #fff;
+      font-family: inherit;
+      font-size: 1.1rem;
+      font-weight: bold;
+      letter-spacing: 1px;
+      cursor: pointer;
+      box-shadow: 0 4px 18px rgba(0,0,0,0.18);
+      transition: transform 0.15s, box-shadow 0.15s, opacity 0.3s;
+      text-shadow: 0 1px 4px rgba(0,0,0,0.2);
+    }
+    @keyframes gradientShift {
+      0%   { background-position: 0% 50%; }
+      50%  { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+    .mix-btn:disabled {
+      opacity: 0.35;
+      animation: none;
+      background: #ccc;
+      cursor: not-allowed;
+      box-shadow: none;
+    }
+    .mix-btn:not(:disabled):active { transform: scale(0.94); box-shadow: 0 2px 8px rgba(0,0,0,0.15); }
+
+    .clear-btn {
+      padding: 14px 22px;
+      border: none;
+      border-radius: 50px;
+      background: #fff;
+      color: #aaa;
+      font-family: inherit;
+      font-size: 0.95rem;
+      font-weight: bold;
+      cursor: pointer;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+      transition: transform 0.15s, color 0.2s;
+    }
+    .clear-btn:active { transform: scale(0.95); }
+    .clear-btn:hover { color: #666; }
   </style>
 </head>
 <body>
@@ -291,11 +317,9 @@
     <span>M</span><span>i</span><span>x</span><span>e</span><span>r</span>
   </h1>
 
-  <!-- Selected colors row -->
-  <div class="selected-row">
-    <div class="sel-pip" id="pip1"></div>
-    <span class="plus-icon">+</span>
-    <div class="sel-pip" id="pip2"></div>
+  <!-- Selected colors pips -->
+  <div class="selected-row" id="selectedRow">
+    <span class="sel-pip-hint">👆 pick colors below!</span>
   </div>
 
   <!-- Central mix zone -->
@@ -309,175 +333,256 @@
   <!-- Color palette -->
   <div class="color-grid" id="colorGrid"></div>
 
-  <!-- Clear -->
-  <button class="clear-btn" id="clearBtn">🔄 Try Again</button>
+  <!-- Action buttons -->
+  <div class="btn-row">
+    <button class="mix-btn" id="mixBtn" disabled>🎨 Mix!</button>
+    <button class="clear-btn" id="clearBtn">🔄 Reset</button>
+  </div>
 
 <script>
 const COLORS = [
-  { id: 'red',    name: 'Red',    hex: '#f03030', labelDark: false },
-  { id: 'yellow', name: 'Yellow', hex: '#f5d000', labelDark: true  },
-  { id: 'blue',   name: 'Blue',   hex: '#2255e8', labelDark: false },
-  { id: 'white',  name: 'White',  hex: '#f0f0f0', labelDark: true  },
-  { id: 'black',  name: 'Black',  hex: '#222222', labelDark: false },
+  { id: 'red',    name: 'Red',    hex: '#f03030', r:240, g:48,  b:48  },
+  { id: 'orange', name: 'Orange', hex: '#ff8c00', r:255, g:140, b:0   },
+  { id: 'yellow', name: 'Yellow', hex: '#f5d000', r:245, g:208, b:0   },
+  { id: 'green',  name: 'Green',  hex: '#27ae60', r:39,  g:174, b:96  },
+  { id: 'blue',   name: 'Blue',   hex: '#2255e8', r:34,  g:85,  b:232 },
+  { id: 'purple', name: 'Purple', hex: '#8e24aa', r:142, g:36,  b:170 },
+  { id: 'pink',   name: 'Pink',   hex: '#ff69b4', r:255, g:105, b:180 },
+  { id: 'brown',  name: 'Brown',  hex: '#8B4513', r:139, g:69,  b:19  },
+  { id: 'white',  name: 'White',  hex: '#f0f0f0', r:240, g:240, b:240 },
+  { id: 'black',  name: 'Black',  hex: '#222222', r:34,  g:34,  b:34  },
 ];
 
-// Mix results: [color1, color2] → { hex, name, labelDark }
+// Named results for known 2-color combos (sorted key)
 const MIX_TABLE = {
-  'red+yellow':   { hex: '#ff8000', name: 'Orange 🍊',      dark: false },
-  'red+blue':     { hex: '#7b1fa2', name: 'Purple 🍇',      dark: false },
-  'yellow+blue':  { hex: '#4caf50', name: 'Green 🌿',       dark: false },
-  'red+white':    { hex: '#ff9999', name: 'Pink 🌸',        dark: true  },
-  'red+black':    { hex: '#800000', name: 'Maroon 🍷',      dark: false },
-  'yellow+white': { hex: '#fffacd', name: 'Cream 🍦',       dark: true  },
-  'yellow+black': { hex: '#808000', name: 'Olive 🫒',       dark: false },
-  'blue+white':   { hex: '#87ceeb', name: 'Sky Blue ☁️',   dark: true  },
-  'blue+black':   { hex: '#0d2b6e', name: 'Navy 🌊',        dark: false },
-  'white+black':  { hex: '#999999', name: 'Gray 🐘',        dark: false },
-  // Same color
-  'red+red':      { hex: '#ff0000', name: 'Super Red! ❤️',  dark: false },
-  'yellow+yellow':{ hex: '#ffee00', name: 'Bright Yellow! ⭐', dark: true },
-  'blue+blue':    { hex: '#0033ff', name: 'Deep Blue! 💙',  dark: false },
-  'white+white':  { hex: '#ffffff', name: 'Snow White! ⛄', dark: true  },
-  'black+black':  { hex: '#000000', name: 'Midnight! 🌑',   dark: false },
+  'blue+red':       { hex: '#7b1fa2', name: 'Purple 🍇' },
+  'blue+yellow':    { hex: '#4caf50', name: 'Green 🌿' },
+  'red+yellow':     { hex: '#ff8000', name: 'Orange 🍊' },
+  'red+white':      { hex: '#ff9999', name: 'Pink 🌸' },
+  'red+black':      { hex: '#800000', name: 'Maroon 🍷' },
+  'blue+white':     { hex: '#87ceeb', name: 'Sky Blue ☁️' },
+  'blue+black':     { hex: '#0d2b6e', name: 'Navy 🌊' },
+  'yellow+white':   { hex: '#fffacd', name: 'Cream 🍦' },
+  'yellow+black':   { hex: '#808000', name: 'Olive 🫒' },
+  'white+black':    { hex: '#888888', name: 'Gray 🐘' },
+  'green+blue':     { hex: '#008080', name: 'Teal 🦋' },
+  'green+yellow':   { hex: '#9acd32', name: 'Lime 🍋' },
+  'green+white':    { hex: '#90ee90', name: 'Mint 🌱' },
+  'green+black':    { hex: '#1a4a1a', name: 'Forest 🌲' },
+  'orange+red':     { hex: '#e83000', name: 'Scarlet 🌶️' },
+  'orange+yellow':  { hex: '#ffcc00', name: 'Gold ⭐' },
+  'orange+white':   { hex: '#ffd9b3', name: 'Peach 🍑' },
+  'orange+blue':    { hex: '#5b5b5b', name: 'Slate 🪨' },
+  'orange+black':   { hex: '#7a3b00', name: 'Chocolate 🍫' },
+  'pink+red':       { hex: '#e8004a', name: 'Hot Pink 💕' },
+  'pink+white':     { hex: '#ffe0ef', name: 'Blush 🌺' },
+  'pink+purple':    { hex: '#d64fa0', name: 'Magenta 💜' },
+  'pink+blue':      { hex: '#b388d9', name: 'Lavender 💐' },
+  'purple+blue':    { hex: '#4a0080', name: 'Violet 🔮' },
+  'purple+red':     { hex: '#b00060', name: 'Berry 🫐' },
+  'purple+white':   { hex: '#e0b3ff', name: 'Lilac 🌸' },
+  'purple+black':   { hex: '#2d0040', name: 'Midnight Purple 🌙' },
+  'brown+red':      { hex: '#8b2500', name: 'Brick 🧱' },
+  'brown+yellow':   { hex: '#b8860b', name: 'Caramel 🍮' },
+  'brown+white':    { hex: '#c4a882', name: 'Tan 🏖️' },
+  'brown+orange':   { hex: '#a05000', name: 'Copper 🪙' },
+  'brown+green':    { hex: '#4a6010', name: 'Moss 🪨' },
 };
 
-const SPARKLES = ['✨','⭐','💫','🌟','✦','◆'];
+// HSL-based fallback naming for unknown combos
+function nameFromHex(hex) {
+  const r = parseInt(hex.slice(1,3),16);
+  const g = parseInt(hex.slice(3,5),16);
+  const b = parseInt(hex.slice(5,7),16);
+  const max = Math.max(r,g,b)/255, min = Math.min(r,g,b)/255;
+  const l = (max+min)/2;
+  const s = max===min ? 0 : l<0.5 ? (max-min)/(max+min) : (max-min)/(2-max-min);
+  let h = 0;
+  if (max !== min) {
+    const d = max - min;
+    const rm=r/255, gm=g/255, bm=b/255, mx=max;
+    if (mx===rm)      h = ((gm-bm)/d + (gm<bm?6:0)) / 6;
+    else if (mx===gm) h = ((bm-rm)/d + 2) / 6;
+    else              h = ((rm-gm)/d + 4) / 6;
+  }
+  h = Math.round(h * 360);
+
+  if (s < 0.1) {
+    if (l < 0.2) return 'Very Dark 🌑';
+    if (l < 0.5) return 'Dark Gray 🐘';
+    if (l < 0.8) return 'Gray 🌫️';
+    return 'Light Gray ☁️';
+  }
+  if (l < 0.15) return 'Very Dark 🌑';
+  const names = [
+    [15,  'Red 🔴'], [35, 'Orange 🍊'], [65, 'Yellow 💛'], [80, 'Yellow-Green 🌿'],
+    [150, 'Green 💚'], [175, 'Teal 🩵'], [200, 'Cyan 🫧'], [250, 'Blue 💙'],
+    [280, 'Indigo 🔵'], [320, 'Purple 💜'], [345, 'Magenta 💗'], [360, 'Red 🔴'],
+  ];
+  for (const [max2, name2] of names) if (h <= max2) return name2;
+  return 'Mystery! 🔮';
+}
+
+const SPARKLES = ['✨','⭐','💫','🌟','🎉','🎊'];
 
 // State
-let selected = [];
+let selectedIds = new Set();
 
-// Audio context
+// Audio
 let audioCtx = null;
 function getAudio() {
   if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
   return audioCtx;
 }
-
 function playSplat() {
   try {
     const ctx = getAudio();
     const t = ctx.currentTime;
-    // Low "splat" thud
-    const osc1 = ctx.createOscillator();
-    const gain1 = ctx.createGain();
-    osc1.type = 'sine';
-    osc1.frequency.setValueAtTime(180, t);
-    osc1.frequency.exponentialRampToValueAtTime(60, t + 0.25);
-    gain1.gain.setValueAtTime(0.6, t);
-    gain1.gain.exponentialRampToValueAtTime(0.001, t + 0.3);
-    osc1.connect(gain1); gain1.connect(ctx.destination);
-    osc1.start(t); osc1.stop(t + 0.35);
-    // High sparkle
-    const osc2 = ctx.createOscillator();
-    const gain2 = ctx.createGain();
-    osc2.type = 'triangle';
-    osc2.frequency.setValueAtTime(800, t + 0.05);
-    osc2.frequency.exponentialRampToValueAtTime(1400, t + 0.15);
-    gain2.gain.setValueAtTime(0.15, t + 0.05);
-    gain2.gain.exponentialRampToValueAtTime(0.001, t + 0.35);
-    osc2.connect(gain2); gain2.connect(ctx.destination);
-    osc2.start(t + 0.05); osc2.stop(t + 0.4);
+    const o1 = ctx.createOscillator(), g1 = ctx.createGain();
+    o1.type = 'sine';
+    o1.frequency.setValueAtTime(180, t);
+    o1.frequency.exponentialRampToValueAtTime(60, t+0.25);
+    g1.gain.setValueAtTime(0.6, t);
+    g1.gain.exponentialRampToValueAtTime(0.001, t+0.3);
+    o1.connect(g1); g1.connect(ctx.destination);
+    o1.start(t); o1.stop(t+0.35);
+    const o2 = ctx.createOscillator(), g2 = ctx.createGain();
+    o2.type = 'triangle';
+    o2.frequency.setValueAtTime(800, t+0.05);
+    o2.frequency.exponentialRampToValueAtTime(1400, t+0.15);
+    g2.gain.setValueAtTime(0.15, t+0.05);
+    g2.gain.exponentialRampToValueAtTime(0.001, t+0.35);
+    o2.connect(g2); g2.connect(ctx.destination);
+    o2.start(t+0.05); o2.stop(t+0.4);
   } catch(e) {}
 }
-
 function playSelect() {
   try {
     const ctx = getAudio();
     const t = ctx.currentTime;
-    const osc = ctx.createOscillator();
-    const gain = ctx.createGain();
-    osc.type = 'sine';
-    osc.frequency.setValueAtTime(440, t);
-    osc.frequency.exponentialRampToValueAtTime(660, t + 0.1);
-    gain.gain.setValueAtTime(0.2, t);
-    gain.gain.exponentialRampToValueAtTime(0.001, t + 0.15);
-    osc.connect(gain); gain.connect(ctx.destination);
-    osc.start(t); osc.stop(t + 0.18);
+    const o = ctx.createOscillator(), g = ctx.createGain();
+    o.type = 'sine';
+    o.frequency.setValueAtTime(440, t);
+    o.frequency.exponentialRampToValueAtTime(660, t+0.08);
+    g.gain.setValueAtTime(0.18, t);
+    g.gain.exponentialRampToValueAtTime(0.001, t+0.12);
+    o.connect(g); g.connect(ctx.destination);
+    o.start(t); o.stop(t+0.15);
+  } catch(e) {}
+}
+function playDeselect() {
+  try {
+    const ctx = getAudio();
+    const t = ctx.currentTime;
+    const o = ctx.createOscillator(), g = ctx.createGain();
+    o.type = 'sine';
+    o.frequency.setValueAtTime(440, t);
+    o.frequency.exponentialRampToValueAtTime(300, t+0.08);
+    g.gain.setValueAtTime(0.15, t);
+    g.gain.exponentialRampToValueAtTime(0.001, t+0.1);
+    o.connect(g); g.connect(ctx.destination);
+    o.start(t); o.stop(t+0.12);
   } catch(e) {}
 }
 
-// Render blob SVG shape
 function blobSVG(hex) {
   return `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" class="blob-shape">
     <ellipse cx="50" cy="55" rx="42" ry="38" fill="${hex}" opacity="0.25"/>
-    <path d="M50 8 C72 8, 88 24, 90 46 C92 68, 76 88, 54 91 C32 94, 10 80, 8 58 C6 36, 22 8, 50 8Z"
-      fill="${hex}" />
+    <path d="M50 8 C72 8, 88 24, 90 46 C92 68, 76 88, 54 91 C32 94, 10 80, 8 58 C6 36, 22 8, 50 8Z" fill="${hex}"/>
     <ellipse cx="38" cy="30" rx="12" ry="7" fill="rgba(255,255,255,0.3)" transform="rotate(-20,38,30)"/>
   </svg>`;
 }
 
-// Build color buttons
+// Build buttons
 const grid = document.getElementById('colorGrid');
 COLORS.forEach(c => {
   const btn = document.createElement('button');
   btn.className = 'color-btn';
   btn.id = 'btn-' + c.id;
   btn.setAttribute('aria-label', c.name);
+  const isDark = (c.r * 0.299 + c.g * 0.587 + c.b * 0.114) > 160;
   btn.innerHTML = blobSVG(c.hex) +
-    `<span class="label" style="color:${c.labelDark ? '#555' : '#fff'}">${c.name}</span>`;
+    `<span class="label" style="color:${isDark ? '#555' : '#fff'}">${c.name}</span>`;
   btn.addEventListener('click', () => onColorClick(c));
   grid.appendChild(btn);
 });
 
-function onColorClick(color) {
-  playSelect();
-
-  if (selected.length === 0) {
-    selected.push(color);
-    document.getElementById('btn-' + color.id).classList.add('selected');
-    updatePips();
-  } else if (selected.length === 1) {
-    if (selected[0].id === color.id) {
-      // allow same color
-    } else {
-      document.getElementById('btn-' + selected[0].id).classList.remove('selected');
-    }
-    selected[1] = color;
-    document.getElementById('btn-' + color.id).classList.add('selected');
-    updatePips();
-    // Trigger mix after short delay
-    setTimeout(doMix, 200);
+function onColorClick(c) {
+  if (selectedIds.has(c.id)) {
+    selectedIds.delete(c.id);
+    document.getElementById('btn-' + c.id).classList.remove('selected');
+    playDeselect();
+  } else {
+    selectedIds.add(c.id);
+    document.getElementById('btn-' + c.id).classList.add('selected');
+    playSelect();
   }
+  updatePips();
+  updateMixBtn();
 }
 
 function updatePips() {
-  const p1 = document.getElementById('pip1');
-  const p2 = document.getElementById('pip2');
-  if (selected[0]) {
-    p1.style.background = selected[0].hex;
-    p1.classList.add('filled');
-  } else {
-    p1.style.background = '';
-    p1.classList.remove('filled');
+  const row = document.getElementById('selectedRow');
+  row.innerHTML = '';
+  const selColors = COLORS.filter(c => selectedIds.has(c.id));
+  if (selColors.length === 0) {
+    row.innerHTML = '<span class="sel-pip-hint">👆 pick colors below!</span>';
+    return;
   }
-  if (selected[1]) {
-    p2.style.background = selected[1].hex;
-    p2.classList.add('filled');
-  } else {
-    p2.style.background = '';
-    p2.classList.remove('filled');
-  }
+  selColors.forEach(c => {
+    const pip = document.createElement('div');
+    pip.className = 'sel-pip filled';
+    pip.style.background = c.hex;
+    pip.title = c.name;
+    row.appendChild(pip);
+  });
+}
+
+function updateMixBtn() {
+  document.getElementById('mixBtn').disabled = selectedIds.size < 2;
 }
 
 function doMix() {
-  if (selected.length < 2) return;
-  const a = selected[0].id;
-  const b = selected[1].id;
-  const key = [a, b].sort().join('+');
-  const result = MIX_TABLE[key] || MIX_TABLE[[b,a].join('+')] || { hex: '#aaa', name: 'Mystery! 🔮', dark: false };
+  const selColors = COLORS.filter(c => selectedIds.has(c.id));
+  if (selColors.length < 2) return;
+
+  let resultHex, resultName, resultDark;
+
+  if (selColors.length === 2) {
+    const key = [selColors[0].id, selColors[1].id].sort().join('+');
+    const named = MIX_TABLE[key];
+    if (named) {
+      resultHex = named.hex;
+      resultName = named.name;
+    }
+  }
+
+  if (!resultHex) {
+    // Average RGB
+    const n = selColors.length;
+    const r = Math.round(selColors.reduce((s,c) => s+c.r, 0) / n);
+    const g = Math.round(selColors.reduce((s,c) => s+c.g, 0) / n);
+    const b = Math.round(selColors.reduce((s,c) => s+c.b, 0) / n);
+    resultHex = '#' + [r,g,b].map(v => v.toString(16).padStart(2,'0')).join('');
+    resultName = nameFromHex(resultHex);
+  }
+
+  // Determine label darkness
+  const rr = parseInt(resultHex.slice(1,3),16);
+  const rg = parseInt(resultHex.slice(3,5),16);
+  const rb = parseInt(resultHex.slice(5,7),16);
+  resultDark = (rr * 0.299 + rg * 0.587 + rb * 0.114) > 150;
 
   const blob = document.getElementById('mixBlob');
   const label = document.getElementById('mixLabel');
-
-  blob.style.background = result.hex;
-  blob.style.boxShadow = `0 8px 32px ${result.hex}55, inset 0 -4px 12px rgba(0,0,0,0.15)`;
-  label.textContent = result.name;
-  label.className = 'color-name' + (result.dark ? ' dark' : '');
+  blob.style.background = resultHex;
+  blob.style.boxShadow = `0 8px 32px ${resultHex}66, inset 0 -4px 12px rgba(0,0,0,0.15)`;
+  label.textContent = resultName;
+  label.className = 'color-name' + (resultDark ? ' dark' : '');
   label.classList.remove('hidden');
 
-  // Splat animation
   blob.classList.remove('splat');
-  void blob.offsetWidth; // reflow
+  void blob.offsetWidth;
   blob.classList.add('splat');
 
   playSplat();
@@ -486,29 +591,28 @@ function doMix() {
 
 function spawnSparkles() {
   const zone = document.querySelector('.mix-zone');
-  for (let i = 0; i < 8; i++) {
+  for (let i = 0; i < 10; i++) {
     setTimeout(() => {
       const el = document.createElement('span');
       el.className = 'sparkle';
       el.textContent = SPARKLES[Math.floor(Math.random() * SPARKLES.length)];
       const angle = Math.random() * Math.PI * 2;
-      const dist = 60 + Math.random() * 80;
+      const dist = 55 + Math.random() * 85;
       el.style.setProperty('--dx', Math.cos(angle) * dist + 'px');
       el.style.setProperty('--dy', Math.sin(angle) * dist + 'px');
-      el.style.left = '50%';
-      el.style.top = '50%';
-      el.style.marginLeft = '-12px';
-      el.style.marginTop = '-12px';
+      el.style.left = '50%'; el.style.top = '50%';
+      el.style.marginLeft = '-12px'; el.style.marginTop = '-12px';
       zone.appendChild(el);
       el.addEventListener('animationend', () => el.remove());
-    }, i * 40);
+    }, i * 35);
   }
 }
 
 function resetAll() {
-  selected = [];
+  selectedIds.clear();
   COLORS.forEach(c => document.getElementById('btn-' + c.id).classList.remove('selected'));
   updatePips();
+  updateMixBtn();
   const blob = document.getElementById('mixBlob');
   blob.style.background = '#e8e0d4';
   blob.style.boxShadow = '';
@@ -517,8 +621,11 @@ function resetAll() {
   label.className = 'color-name hidden';
 }
 
+document.getElementById('mixBtn').addEventListener('click', () => {
+  if (selectedIds.size >= 2) doMix();
+});
 document.getElementById('clearBtn').addEventListener('click', () => {
-  playSelect();
+  playDeselect();
   resetAll();
 });
 </script>
